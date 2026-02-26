@@ -1,79 +1,61 @@
-const getComplaints = async (req, res) => {
+const Complaint = require('../models/Complaint');
+
+// Create a new complaint
+exports.createComplaint = async (req, res) => {
     try {
-        res.status(200).json({
-            success: true,
-            message: 'Complaints retrieved',
-            data: []
-        });
+        const complaint = new Complaint(req.body);
+        await complaint.save();
+        res.status(201).json(complaint);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 };
 
-const createComplaint = async (req, res) => {
+// Read all complaints
+exports.getAllComplaints = async (req, res) => {
     try {
-        const { title, description } = req.body;
-        
-        if (!title || !description) {
-            return res.status(400).json({ error: 'Title and description required' });
+        const complaints = await Complaint.find();
+        res.status(200).json(complaints);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Read a single complaint by ID
+exports.getComplaintById = async (req, res) => {
+    try {
+        const complaint = await Complaint.findById(req.params.id);
+        if (!complaint) {
+            return res.status(404).json({ message: 'Complaint not found' });
         }
-        
-        res.status(201).json({
-            success: true,
-            message: 'Complaint created successfully',
-            data: { title, description }
-        });
+        res.status(200).json(complaint);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
-const getComplaintById = async (req, res) => {
+// Update a complaint by ID
+exports.updateComplaint = async (req, res) => {
     try {
-        const { id } = req.params;
-        res.status(200).json({
-            success: true,
-            message: 'Complaint retrieved',
-            data: { id }
-        });
+        const complaint = await Complaint.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!complaint) {
+            return res.status(404).json({ message: 'Complaint not found' });
+        }
+        res.status(200).json(complaint);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 };
 
-const updateComplaint = async (req, res) => {
+// Delete a complaint by ID
+exports.deleteComplaint = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { title, description } = req.body;
-        
-        res.status(200).json({
-            success: true,
-            message: 'Complaint updated successfully',
-            data: { id, title, description }
-        });
+        const complaint = await Complaint.findByIdAndDelete(req.params.id);
+        if (!complaint) {
+            return res.status(404).json({ message: 'Complaint not found' });
+        }
+        res.status(204).send();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: error.message });
     }
-};
-
-const deleteComplaint = async (req, res) => {
-    try {
-        const { id } = req.params;
-        
-        res.status(200).json({
-            success: true,
-            message: 'Complaint deleted successfully',
-            data: { id }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-module.exports = {
-    getComplaints,
-    createComplaint,
-    getComplaintById,
-    updateComplaint,
-    deleteComplaint
 };
