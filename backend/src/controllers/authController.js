@@ -1,21 +1,18 @@
 // authController.js
 
-// Register function
+// Function to register a user
 const register = (req, res) => {
-    // Logic for registering a user
-    res.send('User registered');
+    // Registration logic goes here
 };
 
-// Login function
+// Function to login a user
 const login = (req, res) => {
-    // Logic for authenticating a user
-    res.send('User logged in');
+    // Login logic goes here
 };
 
-// Logout function
+// Function to logout user
 const logout = (req, res) => {
-    // Logic for logging out a user
-    res.send('User logged out');
+    // Logout logic goes here
 };
 
 module.exports = { register, login, logout };
