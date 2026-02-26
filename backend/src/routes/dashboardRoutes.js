@@ -1,26 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const dashboardController = require('../controllers/dashboardController');
+const { authenticate } = require('../middleware/auth');
 
-// Dashboard route endpoints
-
-// Endpoint for stats
-router.get('/stats', (req, res) => {
-    res.json({ message: 'Stats data' });
-});
-
-// Endpoint for summary
-router.get('/summary', (req, res) => {
-    res.json({ message: 'Summary data' });
-});
-
-// Endpoint for recent complaints
-router.get('/recent-complaints', (req, res) => {
-    res.json({ message: 'Recent complaints data' });
-});
-
-// Endpoint for charts
-router.get('/charts', (req, res) => {
-    res.json({ message: 'Charts data' });
-});
+router.get('/stats', authenticate, dashboardController.stats);
+router.get('/summary', authenticate, dashboardController.summary);
+router.get('/recent', authenticate, dashboardController.recent);
+router.get('/charts', authenticate, dashboardController.charts);
 
 module.exports = router;
