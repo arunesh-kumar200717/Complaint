@@ -1,41 +1,21 @@
-// Admin route endpoints
-
 const express = require('express');
 const router = express.Router();
+const { authenticate } = require('../middleware/auth');
 
-// GET /users
-router.get('/users', (req, res) => {
-    // Logic to get all users
+router.get('/complaints', authenticate, (req, res) => {
+    res.json({ success: true, message: 'All complaints' });
 });
 
-// POST /users
-router.post('/users', (req, res) => {
-    // Logic to create a new user
+router.get('/users', authenticate, (req, res) => {
+    res.json({ success: true, message: 'All users' });
 });
 
-// GET /complaints
-router.get('/complaints', (req, res) => {
-    // Logic to get all complaints
+router.delete('/users/:id', authenticate, (req, res) => {
+    res.json({ success: true, message: 'User deleted' });
 });
 
-// PUT /complaints/:id
-router.put('/complaints/:id', (req, res) => {
-    // Logic to update a complaint by id
-});
-
-// DELETE /complaints/:id
-router.delete('/complaints/:id', (req, res) => {
-    // Logic to delete a complaint by id
-});
-
-// GET /users/:id
-router.get('/users/:id', (req, res) => {
-    // Logic to get a user by id
-});
-
-// DELETE /users/:id
-router.delete('/users/:id', (req, res) => {
-    // Logic to delete a user by id
+router.delete('/complaints/:id', authenticate, (req, res) => {
+    res.json({ success: true, message: 'Complaint deleted' });
 });
 
 module.exports = router;
